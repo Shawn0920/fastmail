@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2E61B8</color>
+    <color name="colorPrimaryDark">#24509E</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="tab_unselect">#C9C9C9</color>
+    <color name="white">#FFFFFF</color>
+    <color name="textColor">#333333</color>
+    <color name="transparent">#00000000</color><!-- 透明色 -->
+    <color name="textGray">#999999</color>
+
+    <color name="refresh_1">#36478C</color>
+    <color name="refresh_2">#297FEC</color>
+    <color name="refresh_3">#78C4FE</color>
+
+    <color name="ctc_backgrount">#F8F9FC</color>
+
+    <color name="webviewProgressbar">#45C01A</color>
+</resources>

@@ -1,0 +1,13 @@
+<resources>
+    <!--<string name="app_name">优递园</string>-->
+    <string name="company_name">北京掌众有限公司</string>
+    <string name="press_again_exit">再按一次退出</string>
+    <string name="home">首页</string>
+    <string name="my">我的</string>
+    <string name="sd_card_permission_1">获取手机相关权限失败，将导致部分功能无法正常使用，需要到设置页面手动授权</string>
+    <string name="view_no_network">没有网络~</string>
+    <string name="net_error_999">网络异常，请稍后再试</string>
+    <string name="verification_1_tip7">请开启权限后，进行此操作</string>
+    <string name="phone_error">手机号填写有误，请重新输入</string>
+    <string name="phone_null">手机号不能为空</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.shawn.fastmail.widget.ProgressWebView
+        android:id="@+id/progressWebview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.shawn.fastmail.widget.ProgressWebView>
+</FrameLayout>
