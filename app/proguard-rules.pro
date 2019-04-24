@@ -135,6 +135,15 @@
 -dontwarn top.zibin.luban.**
 -keep class top.zibin.luban.** {*;}
 
+#OCR识别
+-dontwarn com.kernal.**
+-keep class com.kernal.** { *;}
+-dontwarn kernal.**
+-keep class kernal.** { *;}
+-dontwarn com.wintone.**
+-keep class com.wintone.** { *;}
+
+
 #-------------------------3.与js互相调用的类------------------------
 
 
@@ -240,8 +249,6 @@
 
 #保持design包不被混淆
 -keep public class android.support.design.** {*;}
--keep class com.kernal.smartvision.**{*;}
-
 
 # 保持哪些类不被混淆
 -keep public class * extends android.app.Appliction

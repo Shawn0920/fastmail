@@ -203,6 +203,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
             }
         });
         OcrType = OCRConfigParams.getOcrType(this);
+        vinCameraPreView.setZoom(false);
         currentType = SharedPreferencesHelper.getInt(SmartvisionCameraActivity.this, "currentType", 2);
         //判断使用的是 vin 还是手机号
         if (OcrType != 0) {
