@@ -144,6 +144,11 @@
 -keep class com.wintone.** { *;}
 
 
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  # 混淆时所采用的算法
+-keep public class com.android.vending.licensing.ILicensingService    # 保持哪些类不被混淆
+-keep @com.qihoo.SdkProtected.BarCode_sdk.Keep class  **{*;}
+-keep,allowobfuscation @interface com.qihoo.SdkProtected.BarCode_sdk.Keep
+
 #-------------------------3.与js互相调用的类------------------------
 
 
@@ -258,6 +263,7 @@
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.preference.Preference
+-keep public class * extends android.app.backup.BackupAgentHelper
 
 # ============忽略警告，否则打包可能会不成功=============
 -ignorewarnings
