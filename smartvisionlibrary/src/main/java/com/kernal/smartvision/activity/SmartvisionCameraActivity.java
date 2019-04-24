@@ -88,7 +88,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     private int scan_line_width;
     private RelativeLayout relativeLayout;
     private ImageView scanHorizontalLineImageView, iv_camera_flash;
-    private ImageButton imbtn_takepic;
+//    private ImageButton imbtn_takepic;
     private FrameLayout surfaceContainer;
 
     private AppCompatTextView tvBack, tvTitle;
@@ -148,8 +148,8 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         scanHorizontalLineImageView = (ImageView) findViewById(R.id.camera_scanHorizontalLineImageView);
         iv_camera_flash = (ImageView) findViewById(R.id.iv_camera_flash);
         iv_camera_flash.setOnClickListener(this);
-        imbtn_takepic = (ImageButton) findViewById(R.id.imbtn_takepic);
-        imbtn_takepic.setOnClickListener(this);
+//        imbtn_takepic = (ImageButton) findViewById(R.id.imbtn_takepic);
+//        imbtn_takepic.setOnClickListener(this);
         surfaceContainer = (FrameLayout) findViewById(R.id.camera_container);
         tvTitle = (AppCompatTextView) findViewById(R.id.toolbar_title);
         tvBack = (AppCompatTextView) findViewById(R.id.toolbar_back);
@@ -221,14 +221,17 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     }
 
     private void removeVinView() {
-        vinCameraPreView.finishRecogn();
-        relativeLayout.removeView(rectFindView);
-        scanHorizontalLineImageView.clearAnimation();
-        scanHorizontalLineImageView.setVisibility(View.GONE);
-        imbtn_takepic.setVisibility(View.GONE);
-        haveFinished = false;
-        isInFront = true;
-        rectFindView = null;
+        if (vinCameraPreView != null) {
+            vinCameraPreView.finishRecogn();
+            relativeLayout.removeView(rectFindView);
+            scanHorizontalLineImageView.clearAnimation();
+            scanHorizontalLineImageView.setVisibility(View.GONE);
+//            imbtn_takepic.setVisibility(View.GONE);
+            haveFinished = false;
+            isInFront = true;
+            rectFindView = null;
+            vinCameraPreView = null;
+        }
     }
 
 
@@ -357,8 +360,8 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
             layoutParams.leftMargin = (int) (srcWidth * 0.86);
             int topmargin = (int) (int) (srcHeight * 0.05) + (int) (srcHeight * 0.02);
             layoutParams.topMargin = topmargin;
-            imbtn_takepic.setVisibility(View.VISIBLE);
-            imbtn_takepic.setLayoutParams(layoutParams);
+//            imbtn_takepic.setVisibility(View.VISIBLE);
+//            imbtn_takepic.setLayoutParams(layoutParams);
 
         } else {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int) (srcWidth * 0.05), (int) (srcWidth * 0.05));
@@ -368,7 +371,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
             int topmargin = (int) (int) (srcHeight * 0.4) + (int) (srcHeight * 0.02);
             layoutParams.leftMargin = (int) (srcWidth * 0.7);
             layoutParams.topMargin = topmargin;
-            imbtn_takepic.setLayoutParams(layoutParams);
+//            imbtn_takepic.setLayoutParams(layoutParams);
 
         }
     }
@@ -459,10 +462,11 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
                 iv_camera_flash.setImageResource(R.drawable.flash_on);
             }
 
-        } else if (i == R.id.imbtn_takepic) {
-            //拍照按钮
-            vinCameraPreView.setTakePicture();
         }
+//        else if (i == R.id.imbtn_takepic) {
+//            //拍照按钮
+//            vinCameraPreView.setTakePicture();
+//        }
     }
 
     // 监听返回键事件
@@ -538,7 +542,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         if (scanHorizontalLineImageView2 != null) {
             scanHorizontalLineImageView2.clearAnimation();
         }
-        if(webview!=null){
+        if (webview != null) {
             webview.clearCache(true);
             webview.destroy();
         }
@@ -580,16 +584,18 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     }
 
     private void removeQrScaner() {
-        barCodePreView.closeCamera();
-        scanHorizontalLineImageView2.clearAnimation();
-        relativeLayout.removeView(barCodeView);
-        relativeLayout.removeView(scanHorizontalLineImageView2);
-        relativeLayout.removeView(tv_prompt);
-        surfaceContainer.removeAllViews();
-        barCodePreView = null;
-        barCodeView = null;
-        scanHorizontalLineImageView2 = null;
-        tv_prompt = null;
+        if (barCodePreView != null) {
+            barCodePreView.closeCamera();
+            scanHorizontalLineImageView2.clearAnimation();
+            relativeLayout.removeView(barCodeView);
+            relativeLayout.removeView(scanHorizontalLineImageView2);
+            relativeLayout.removeView(tv_prompt);
+            surfaceContainer.removeAllViews();
+            barCodePreView = null;
+            barCodeView = null;
+            scanHorizontalLineImageView2 = null;
+            tv_prompt = null;
+        }
     }
 
 
@@ -830,6 +836,26 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
                     public void run() {
                         haveFinished = false;
                         isInFront = true;
+                    }
+                });
+
+                return null;
+            }
+        });
+
+        FunManager.registerFunctionSync("gaoyan484sha", new FunctionSync() {
+            @Override
+            public JSONObject onHandle(JSONObject params) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(vinCameraPreView!=null){
+                            removeVinView();
+                            findQrView();
+                        }else if(barCodePreView!=null){
+                            haveFinished = false;
+                            isInFront = true;
+                        }
                     }
                 });
 

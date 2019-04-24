@@ -149,6 +149,14 @@ public class JavascriptBridge {
                 functionSync.onHandle(null);
             }
         }
+
+        @android.webkit.JavascriptInterface
+        public void gaoyan484sha(){
+            FunctionSync functionSync = FunManager.getFunctionSync("gaoyan484sha");
+            if (functionSync != null) {
+                functionSync.onHandle(null);
+            }
+        }
     }
 
 }
