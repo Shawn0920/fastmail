@@ -55,13 +55,13 @@ android {
         //我的APP
         fastmail {
             applicationId "cn.zhongbianli.fastmail"
-            versionCode rootProject.ext.fastmail.versionCode
-            versionName rootProject.ext.fastmail.versionName
+            versionCode 1
+            versionName "1.0"
             resValue "string", "app_name", "优递园"
             buildConfigField "String", "APP_File_Provider", '"com.flavor.fastmail.fileprovider"'
             buildConfigField "String", "BASE_SERVER_URL", '"http://my/app/"'
-            buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
-//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.0.161:8080"'
+//            buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
+            buildConfigField "String", "BASE_H5_URL", '"http://10.105.0.161:8080"'
             //manifest里面的值
             manifestPlaceholders = [
                     MTA_CHANNEL_VALUE: "fastmail",
@@ -71,8 +71,8 @@ android {
         //你的APP
         courier {
             applicationId "cn.zhongbianli.courier"
-            versionCode rootProject.ext.courier.versionCode
-            versionName rootProject.ext.courier.versionName
+            versionCode 1
+            versionName "1.0"
             resValue "string", "app_name", "快递员"
             buildConfigField "String", "APP_File_Provider", '"com.flavor.courier.fileprovider"'
             buildConfigField "String", "BASE_SERVER_URL", '"http://your/app/"'
