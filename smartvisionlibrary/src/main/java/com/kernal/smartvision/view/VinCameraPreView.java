@@ -100,6 +100,11 @@ public class VinCameraPreView extends SurfaceView implements SurfaceHolder.Callb
         currentType = SharedPreferencesHelper.getInt(mContext, "currentType", 1);
         //识别服务初始化
         ocrRecogServer = new OcrRecogServer(mContext.getApplicationContext()).initOcr();
+
+        //打开相机
+        if (mCamera == null){
+            mCamera = CameraSetting.getInstance(mContext.getApplicationContext()).open(0, mCamera);
+        }
     }
 
     @Override
@@ -109,6 +114,8 @@ public class VinCameraPreView extends SurfaceView implements SurfaceHolder.Callb
         if (mCamera == null){
             mCamera = CameraSetting.getInstance(mContext.getApplicationContext()).open(0, mCamera);
         }
+
+
         //相机参数初始化
         CameraSetting.getInstance(mContext.getApplicationContext()).initCameraParamters(mCamera,currentType,mHolder, mOuter.get(),VinCameraPreView.this);
         if (myHandler == null){
@@ -116,6 +123,9 @@ public class VinCameraPreView extends SurfaceView implements SurfaceHolder.Callb
         }
         //自动对焦
         myHandler.sendEmptyMessageDelayed(1001,0);
+
+        //设置缩放
+//        setZoom(false);
     }
 
     @Override
@@ -257,15 +267,26 @@ public class VinCameraPreView extends SurfaceView implements SurfaceHolder.Callb
      * @param zoom
      */
     public void setZoom(boolean zoom){
+        Log.e("================","start");
         if( mCamera != null && mCamera.getParameters().isZoomSupported()){
+            mCamera.setZoomChangeListener(new Camera.OnZoomChangeListener() {
+                @Override
+                public void onZoomChange(int i, boolean b, Camera camera) {
+                    Log.e("===============","zzz");
+                }
+            });
+            Log.e("================","true");
             Camera.Parameters parameters = mCamera.getParameters();
             if (zoom){
+                Log.e("================","1");
                 parameters.setZoom((int) (mCamera.getParameters().getMaxZoom() * 0.4));
             }else {
-                parameters.setZoom(0);
+                parameters.setZoom(100000);
+                Log.e("================","2");
             }
             mCamera.setParameters(parameters);
         }
+        Log.e("================","finish");
     }
 
     /**
@@ -341,4 +362,7 @@ public class VinCameraPreView extends SurfaceView implements SurfaceHolder.Callb
         mOnTextChangeListener = onTextChangeListener;
     }
 
+    public Camera getCamera() {
+        return mCamera;
+    }
 }

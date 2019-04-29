@@ -50,6 +50,7 @@ public class BarCodePreView extends SurfaceView implements SurfaceHolder.Callbac
         mBarcode = new KernalBarCode(context);
         this.barCodeView = barCodeView;
         mScanner = s;
+        mCamera = Camera.open();
         /**
          * 初始化识别引擎
          */
@@ -131,7 +132,7 @@ public class BarCodePreView extends SurfaceView implements SurfaceHolder.Callbac
              * 放大二维码大小接口
              */
             if (mCamera != null) {
-                BarCodeUtils.getInstance(context).decode(tempData, params.getPreviewSize().width, params.getPreviewSize().height, mCamera, frameRect, screenResolution, cameraResolution);
+//                BarCodeUtils.getInstance(context).decode(tempData, params.getPreviewSize().width, params.getPreviewSize().height, mCamera, frameRect, screenResolution, cameraResolution);
             }
 
             if (isStartWeakLightDetection) {
@@ -158,7 +159,7 @@ public class BarCodePreView extends SurfaceView implements SurfaceHolder.Callbac
     public void surfaceCreated(SurfaceHolder holder) {
 
         try {
-            mCamera = Camera.open();
+//            mCamera = Camera.open();
             mCamera.setPreviewDisplay(holder);
             // Preview callback used whenever new viewfinder frame is available
             mCamera.setPreviewCallback(new Camera.PreviewCallback() {
@@ -369,5 +370,9 @@ public class BarCodePreView extends SurfaceView implements SurfaceHolder.Callbac
         } else {
             CameraSetting.getInstance(mScanner.getApplicationContext()).closedCameraFlash(mCamera);
         }
+    }
+
+    public Camera getCamera() {
+        return mCamera;
     }
 }

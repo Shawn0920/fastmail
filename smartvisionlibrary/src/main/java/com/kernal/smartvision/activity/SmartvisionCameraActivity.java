@@ -9,11 +9,13 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -62,6 +64,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 
 /**
@@ -87,8 +90,9 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     private static final int ScreentVertical = 1;
     private int scan_line_width;
     private RelativeLayout relativeLayout;
-    private ImageView scanHorizontalLineImageView, iv_camera_flash;
-//    private ImageButton imbtn_takepic;
+    private ImageView scanHorizontalLineImageView;
+    private TextView tv_camera_flash;
+    //    private ImageButton imbtn_takepic;
     private FrameLayout surfaceContainer;
 
     private AppCompatTextView tvBack, tvTitle;
@@ -146,8 +150,8 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     private void initView() {
         relativeLayout = (RelativeLayout) findViewById(R.id.camera_re);
         scanHorizontalLineImageView = (ImageView) findViewById(R.id.camera_scanHorizontalLineImageView);
-        iv_camera_flash = (ImageView) findViewById(R.id.iv_camera_flash);
-        iv_camera_flash.setOnClickListener(this);
+        tv_camera_flash = (TextView) findViewById(R.id.tv_camera_flash);
+        tv_camera_flash.setOnClickListener(this);
 //        imbtn_takepic = (ImageButton) findViewById(R.id.imbtn_takepic);
 //        imbtn_takepic.setOnClickListener(this);
         surfaceContainer = (FrameLayout) findViewById(R.id.camera_container);
@@ -187,6 +191,8 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     private void findVinView() {
         //动态创建 SurfaceView
         vinCameraPreView = new VinCameraPreView(SmartvisionCameraActivity.this);
+        setFlashlightEnabled(isOpenFlash);
+//        vinCameraPreView.setZoom(false);
         surfaceContainer.addView(vinCameraPreView);
         vinCameraPreView.setOnTextChangeListener(new VinCameraPreView.OnTextChangeListener() {
             @Override
@@ -203,7 +209,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
             }
         });
         OcrType = OCRConfigParams.getOcrType(this);
-        vinCameraPreView.setZoom(false);
+
         currentType = SharedPreferencesHelper.getInt(SmartvisionCameraActivity.this, "currentType", 2);
         //判断使用的是 vin 还是手机号
         if (OcrType != 0) {
@@ -289,7 +295,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
          * 进入开启扫描条码页面
          */
         findQrView();
-
+//        findVinView();
     }
 
     /**
@@ -437,30 +443,11 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
                 barCodePreView.closeCamera();
             }
             finish();
-        } else if (i == R.id.iv_camera_flash) {
+        } else if (i == R.id.tv_camera_flash) {
             //操作闪光灯
-            if (isOpenFlash) {
-                isOpenFlash = false;
-                //关闭闪光灯
-                if (vinCameraPreView != null) {
-                    vinCameraPreView.operateFlash(false);
-                }
-                if (barCodePreView != null) {
-                    barCodePreView.openOrClosedFlash();
-                    BarCodePreView.isOpenFlash = false;
-                }
-                iv_camera_flash.setImageResource(R.drawable.flash_off);
-            } else {
-                isOpenFlash = true;
-                if (vinCameraPreView != null) {
-                    vinCameraPreView.operateFlash(true);
-                }
-                if (barCodePreView != null) {
-                    barCodePreView.openOrClosedFlash();
-                    BarCodePreView.isOpenFlash = true;
-                }
-                iv_camera_flash.setImageResource(R.drawable.flash_on);
-            }
+            isOpenFlash = !isOpenFlash;
+            setFlashlightEnabled(isOpenFlash);
+            tv_camera_flash.setText(isOpenFlash ? "关灯" : "开灯");
 
         }
 //        else if (i == R.id.imbtn_takepic) {
@@ -579,9 +566,11 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
 //
 //        }
 
-        haveFinished = false;
-        isInFront = true;
+//        haveFinished = false;
+//        isInFront = true;
+
     }
+
 
     private void removeQrScaner() {
         if (barCodePreView != null) {
@@ -640,6 +629,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     public void findQrView() {
         barCodeView = new BarCodeView(this);
         barCodePreView = new BarCodePreView(this, this, barCodeView);
+        setFlashlightEnabled(isOpenFlash);
 //        relativeLayout = new RelativeLayout(this);
         /**
          * 扫描框UI布局
@@ -678,6 +668,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         verticalAnimation2.setDuration(2000);
         verticalAnimation2.setRepeatCount(Animation.INFINITE); // 无限循环
         scanHorizontalLineImageView2.startAnimation(verticalAnimation2);
+
     }
 
     public Handler mAutoFocusHandler = new Handler() {
@@ -849,10 +840,10 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(vinCameraPreView!=null){
+                        if (vinCameraPreView != null) {
                             removeVinView();
                             findQrView();
-                        }else if(barCodePreView!=null){
+                        } else if (barCodePreView != null) {
                             haveFinished = false;
                             isInFront = true;
                         }
@@ -875,5 +866,48 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         webview.loadUrl("javascript:phoneScannerResult('" + result + "')");
     }
 
+
+    /**
+     * 设置闪光灯的开启和关闭
+     *
+     * @param isEnable
+     * @author shawn
+     * @date 2019-4-28
+     */
+    private void setFlashlightEnabled(boolean isEnable) {
+        try {
+            if (isEnable) {
+                if (vinCameraPreView != null) {
+                    Camera m_Camera = vinCameraPreView.getCamera();
+                    Camera.Parameters mParameters;
+                    mParameters = m_Camera.getParameters();
+                    mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    m_Camera.setParameters(mParameters);
+                } else if (barCodePreView != null) {
+                    Camera m_Camera = barCodePreView.getCamera();
+                    Camera.Parameters mParameters;
+                    mParameters = m_Camera.getParameters();
+                    mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    m_Camera.setParameters(mParameters);
+                }
+            } else {
+                if (vinCameraPreView != null) {
+                    Camera.Parameters mParameters;
+                    Camera m_Camera = vinCameraPreView.getCamera();
+                    mParameters = m_Camera.getParameters();
+                    mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                    m_Camera.setParameters(mParameters);
+                } else if (barCodePreView != null) {
+                    Camera.Parameters mParameters;
+                    Camera m_Camera = barCodePreView.getCamera();
+                    mParameters = m_Camera.getParameters();
+                    mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                    m_Camera.setParameters(mParameters);
+                }
+            }
+        } catch (Exception ex) {
+        }
+
+    }
 
 }
