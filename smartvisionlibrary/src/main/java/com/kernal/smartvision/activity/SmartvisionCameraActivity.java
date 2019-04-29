@@ -90,8 +90,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     private static final int ScreentVertical = 1;
     private int scan_line_width;
     private RelativeLayout relativeLayout;
-    private ImageView scanHorizontalLineImageView;
-    private TextView tv_camera_flash;
+    private ImageView scanHorizontalLineImageView, iv_camera_flash;
     //    private ImageButton imbtn_takepic;
     private FrameLayout surfaceContainer;
 
@@ -150,8 +149,8 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     private void initView() {
         relativeLayout = (RelativeLayout) findViewById(R.id.camera_re);
         scanHorizontalLineImageView = (ImageView) findViewById(R.id.camera_scanHorizontalLineImageView);
-        tv_camera_flash = (TextView) findViewById(R.id.tv_camera_flash);
-        tv_camera_flash.setOnClickListener(this);
+        iv_camera_flash = (ImageView) findViewById(R.id.iv_camera_flash);
+        iv_camera_flash.setOnClickListener(this);
 //        imbtn_takepic = (ImageButton) findViewById(R.id.imbtn_takepic);
 //        imbtn_takepic.setOnClickListener(this);
         surfaceContainer = (FrameLayout) findViewById(R.id.camera_container);
@@ -159,7 +158,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         tvBack = (AppCompatTextView) findViewById(R.id.toolbar_back);
         tvBack.setOnClickListener(this);
 
-        tvTitle.setText("入库");
+//        tvTitle.setText("入库");
 
 
         webview = (ProgressWebView) findViewById(R.id.progressWebview);
@@ -443,11 +442,11 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
                 barCodePreView.closeCamera();
             }
             finish();
-        } else if (i == R.id.tv_camera_flash) {
+        } else if (i == R.id.iv_camera_flash) {
             //操作闪光灯
             isOpenFlash = !isOpenFlash;
             setFlashlightEnabled(isOpenFlash);
-            tv_camera_flash.setText(isOpenFlash ? "关灯" : "开灯");
+            iv_camera_flash.setImageResource(isOpenFlash ? R.drawable.icon_flash_press : R.drawable.icon_flash_normal);
 
         }
 //        else if (i == R.id.imbtn_takepic) {
@@ -849,6 +848,48 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
                         }
                     }
                 });
+
+                return null;
+            }
+        });
+
+        FunManager.registerFunctionSync("setTitle", new FunctionSync() {
+            @Override
+            public JSONObject onHandle(final JSONObject params) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String title = params.getString("title");
+                            Log.e("==========", title);
+                            tvTitle.setText(title);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+                return null;
+            }
+        });
+
+        FunManager.registerFunctionSync("barCodeSuccess", new FunctionSync() {
+            @Override
+            public JSONObject onHandle(final JSONObject params) {
+                try {
+                    Thread.sleep(1500);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            haveFinished = false;
+                            isInFront = true;
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
 
                 return null;
             }

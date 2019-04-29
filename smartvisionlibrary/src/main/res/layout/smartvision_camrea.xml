@@ -31,14 +31,13 @@
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/tv_camera_flash"
+            <ImageView
+                android:id="@+id/iv_camera_flash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/white"
-                android:text="开灯"/>
+                android:src="@drawable/icon_flash_normal"/>
 
         </android.support.v7.widget.Toolbar>
 

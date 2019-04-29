@@ -136,7 +136,6 @@ public class JavascriptBridge {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                System.out.print(object.toString());
                 functionSync.onHandle(object);
             }
 
@@ -153,6 +152,29 @@ public class JavascriptBridge {
         @android.webkit.JavascriptInterface
         public void gaoyan484sha(){
             FunctionSync functionSync = FunManager.getFunctionSync("gaoyan484sha");
+            if (functionSync != null) {
+                functionSync.onHandle(null);
+            }
+        }
+
+        @android.webkit.JavascriptInterface
+        public void setTitle(String title) {
+            FunctionSync functionSync = FunManager.getFunctionSync("setTitle");
+            if (functionSync != null) {
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("title", title);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                functionSync.onHandle(object);
+            }
+
+        }
+
+        @android.webkit.JavascriptInterface
+        public void barCodeSuccess(){
+            FunctionSync functionSync = FunManager.getFunctionSync("barCodeSuccess");
             if (functionSync != null) {
                 functionSync.onHandle(null);
             }
