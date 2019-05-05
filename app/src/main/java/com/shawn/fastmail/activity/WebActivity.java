@@ -37,9 +37,16 @@ import com.kernal.smartvision.activity.SmartvisionCameraActivity;
 import com.shawn.fastmail.BuildConfig;
 import com.shawn.fastmail.R;
 import com.shawn.fastmail.base.BaseActivity;
+import com.shawn.fastmail.base.BaseBean;
 import com.shawn.fastmail.config.Constants;
+import com.shawn.fastmail.dialog.UpdateDialog;
 import com.shawn.fastmail.entity.JsResponse;
+import com.shawn.fastmail.entity.UpdateBean;
+import com.shawn.fastmail.entity.UpdateRequestBean;
+import com.shawn.fastmail.https.NetCallBack;
+import com.shawn.fastmail.https.RestClient;
 import com.shawn.fastmail.utils.Callback;
+import com.shawn.fastmail.utils.CommonUtil;
 import com.shawn.fastmail.utils.FunManager;
 import com.shawn.fastmail.utils.FunctionSync;
 import com.shawn.fastmail.utils.JavascriptBridge;
@@ -49,6 +56,9 @@ import com.shawn.fastmail.utils.ToastUtils;
 import com.shawn.fastmail.widget.ProgressWebView;
 
 import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 import static com.shawn.fastmail.config.Constants.APP_CACAHE_DIRNAME;
 
@@ -493,4 +503,25 @@ public class WebActivity extends BaseActivity {
         webview.loadUrl("javascript:" + methodName + "('" + value + "')");
     }
 
+    /**
+     * 检查更新
+     */
+    private void checkUpdate() {
+        UpdateRequestBean requestBean = new UpdateRequestBean();
+        requestBean.versionCode = CommonUtil.getVersionCode(this);
+        requestBean.versionName = CommonUtil.getVersionName(this);
+
+        RestClient.api().checkUpdate(requestBean).enqueue(new NetCallBack<BaseBean<UpdateBean>>(this) {
+            @Override
+            protected void onSuccess(Call<BaseBean<UpdateBean>> call, Response<BaseBean<UpdateBean>> response, BaseBean<UpdateBean> bean) {
+                super.onSuccess(call, response, bean);
+                if (bean.getData().isNeedUpdate == 1) {
+                    new UpdateDialog.Builder(WebActivity.this)
+                            .data(bean.getData().title,bean.getData().content,bean.getData().isForce==1,bean.getData().url,bean.getData().NewVersion)
+                            .builder()
+                            .show();
+                }
+            }
+        });
+    }
 }

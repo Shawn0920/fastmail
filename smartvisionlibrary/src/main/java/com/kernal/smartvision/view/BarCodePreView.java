@@ -160,6 +160,9 @@ public class BarCodePreView extends SurfaceView implements SurfaceHolder.Callbac
 
         try {
 //            mCamera = Camera.open();
+            if(mCamera==null){
+                mCamera = Camera.open();
+            }
             mCamera.setPreviewDisplay(holder);
             // Preview callback used whenever new viewfinder frame is available
             mCamera.setPreviewCallback(new Camera.PreviewCallback() {

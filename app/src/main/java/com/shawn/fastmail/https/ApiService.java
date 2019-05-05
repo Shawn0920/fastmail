@@ -11,6 +11,8 @@ import com.shawn.fastmail.entity.OutboundRequestBean;
 import com.shawn.fastmail.entity.PacketDetailBean;
 import com.shawn.fastmail.entity.SearchBean;
 import com.shawn.fastmail.entity.SearchRequestBean;
+import com.shawn.fastmail.entity.UpdateBean;
+import com.shawn.fastmail.entity.UpdateRequestBean;
 
 import java.util.List;
 
@@ -112,5 +114,14 @@ public interface ApiService {
     @POST("merchant/user/login")
     @Headers({"Content-Type: application/json"})
     Call<BaseBean> login( @Body LoginRequestBean requestBean);
+
+    /**
+     * APP检查更新接口
+     * @param requestBean
+     * @return
+     */
+    @POST("merchant/user/login")
+    @Headers({"Content-Type: application/json"})
+    Call<BaseBean<UpdateBean>> checkUpdate(@Body UpdateRequestBean requestBean);
 }
 

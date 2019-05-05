@@ -243,28 +243,35 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT > 18) {
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_VISIBLE;
-            decorView.setSystemUiVisibility(option);
-        }
-
-        isResmue = true;
         if (vinCameraPreView != null) {
-            vinCameraPreView.cameraOnResume();
+            if (Build.VERSION.SDK_INT > 18) {
+                View decorView = getWindow().getDecorView();
+                int option = View.SYSTEM_UI_FLAG_VISIBLE;
+                decorView.setSystemUiVisibility(option);
+            }
+
+            isResmue = true;
+            if (vinCameraPreView != null) {
+                vinCameraPreView.cameraOnResume();
+            }
+        } else if (barCodePreView != null) {
+            isInFront = true;
         }
-        isInFront = true;
+        isOpenFlash = false;
+        iv_camera_flash.setImageResource(R.drawable.icon_flash_normal);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        isResmue = false;
         if (vinCameraPreView != null) {
-            vinCameraPreView.cameraOnPause();
+            isResmue = false;
+            if (vinCameraPreView != null) {
+                vinCameraPreView.cameraOnPause();
+            }
+        } else if (barCodePreView != null) {
+            isInFront = false;
         }
-        isInFront = false;
-
     }
 
     //界面的布局，主要包括两方面：扫描框的布局 和 界面其他元素布局

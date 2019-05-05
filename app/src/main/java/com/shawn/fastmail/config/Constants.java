@@ -1,5 +1,7 @@
 package com.shawn.fastmail.config;
 
+import com.shawn.fastmail.BuildConfig;
+
 /**
  * 描述：
  *
@@ -8,7 +10,8 @@ package com.shawn.fastmail.config;
  */
 public class Constants {
 
-    public static String BASE_URL = "http://zblapi.bajiedai.com.cn/tender/";
+//    public static String BASE_URL = "http://zblapi.bajiedai.com.cn/tender/";
+    public static String BASE_URL = BuildConfig.BASE_SERVER_URL;
 
     public static final String TAG = "TAG";
 
