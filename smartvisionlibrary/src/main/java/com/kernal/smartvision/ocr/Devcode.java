@@ -20,5 +20,5 @@ public class Devcode {
 	/**
 	 * 这里替换开发码
 	 */
-	public static String devcode = "5RKZ5Y2X5P6V5PY";
+	public static String devcode = "5YYX5LQS5O6M5LY";
 }
