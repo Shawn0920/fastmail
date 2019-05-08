@@ -17,12 +17,9 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.DownloadListener;
-import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -30,7 +27,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.kernal.smartvision.activity.SmartvisionCameraActivity;
@@ -79,6 +75,7 @@ public class WebActivity extends BaseActivity {
     private ValueCallback filePathCallback;
     private ValueCallback uploadFile;
     private Uri imageUri;
+    private String failUrl;
 
     private ProgressWebView webview;
     private static JavascriptBridge jsb;
@@ -158,6 +155,7 @@ public class WebActivity extends BaseActivity {
         jsb = new JavascriptBridge(webview);
         initFunction();
 
+        checkUpdate();
     }
 
 
@@ -330,7 +328,9 @@ public class WebActivity extends BaseActivity {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
-            LogUtils.e("shawn======", errorCode + "");
+            LogUtils.e("shawn======", failingUrl);
+            failUrl = failingUrl;
+            view.loadUrl("file:///android_asset/error/error.html");
         }
 
         @Override
@@ -489,6 +489,43 @@ public class WebActivity extends BaseActivity {
                 return null;
             }
         });
+        FunManager.registerFunctionSync(Constants.NativeMethodName.getVersionCode, new FunctionSync() {
+            @Override
+            public JSONObject onHandle(JSONObject params) {
+                JSONObject object = new JSONObject();
+                JsonUtil.putObject(object, "getVersionCode", CommonUtil.getVersionName(WebActivity.this));
+                return object;
+            }
+        });
+        FunManager.registerFunctionSync(Constants.NativeMethodName.refresh, new FunctionSync() {
+            @Override
+            public JSONObject onHandle(JSONObject params) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (failUrl != null) {
+                            webview.loadUrl(failUrl);
+                        } else {
+                            webview.loadUrl(url);
+                        }
+                    }
+                });
+                return null;
+            }
+        });
+        FunManager.registerFunctionSync(Constants.NativeMethodName.toast, new FunctionSync() {
+            @Override
+            public JSONObject onHandle(JSONObject params) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String msg = JsonUtil.getString(params, "msg");
+                        ToastUtils.show(msg);
+                    }
+                });
+                return null;
+            }
+        });
 
     }
 
@@ -508,20 +545,33 @@ public class WebActivity extends BaseActivity {
      */
     private void checkUpdate() {
         UpdateRequestBean requestBean = new UpdateRequestBean();
-        requestBean.versionCode = CommonUtil.getVersionCode(this);
-        requestBean.versionName = CommonUtil.getVersionName(this);
-
-        RestClient.api().checkUpdate(requestBean).enqueue(new NetCallBack<BaseBean<UpdateBean>>(this) {
-            @Override
-            protected void onSuccess(Call<BaseBean<UpdateBean>> call, Response<BaseBean<UpdateBean>> response, BaseBean<UpdateBean> bean) {
-                super.onSuccess(call, response, bean);
-                if (bean.getData().isNeedUpdate == 1) {
-                    new UpdateDialog.Builder(WebActivity.this)
-                            .data(bean.getData().title,bean.getData().content,bean.getData().isForce==1,bean.getData().url,bean.getData().NewVersion)
-                            .builder()
-                            .show();
+        requestBean.versionCode = CommonUtil.getVersionName(this);
+        if ("cn.zhongbianli.fastmail".equals(getPackageName())) {
+            RestClient.api().checkUpdateForFastMail(requestBean).enqueue(new NetCallBack<BaseBean<UpdateBean>>(this) {
+                @Override
+                protected void onSuccess(Call<BaseBean<UpdateBean>> call, Response<BaseBean<UpdateBean>> response, BaseBean<UpdateBean> bean) {
+                    super.onSuccess(call, response, bean);
+                    if (bean.getData().isNeedUpdate == 1) {
+                        new UpdateDialog.Builder(WebActivity.this)
+                                .data(bean.getData().title, bean.getData().content, bean.getData().isForce == 1, bean.getData().url, bean.getData().newVersionCode)
+                                .builder()
+                                .show();
+                    }
                 }
-            }
-        });
+            });
+        } else if ("cn.zhongbianli.courier".equals(getPackageName())) {
+            RestClient.api().checkUpdateForCourier(requestBean).enqueue(new NetCallBack<BaseBean<UpdateBean>>(this) {
+                @Override
+                protected void onSuccess(Call<BaseBean<UpdateBean>> call, Response<BaseBean<UpdateBean>> response, BaseBean<UpdateBean> bean) {
+                    super.onSuccess(call, response, bean);
+                    if (bean.getData().isNeedUpdate == 1) {
+                        new UpdateDialog.Builder(WebActivity.this)
+                                .data(bean.getData().title, bean.getData().content, bean.getData().isForce == 1, bean.getData().url, bean.getData().newVersionCode)
+                                .builder()
+                                .show();
+                    }
+                }
+            });
+        }
     }
 }

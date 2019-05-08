@@ -120,8 +120,17 @@ public interface ApiService {
      * @param requestBean
      * @return
      */
-    @POST("merchant/user/login")
+    @POST("version/merchant/getversionupdate")
     @Headers({"Content-Type: application/json"})
-    Call<BaseBean<UpdateBean>> checkUpdate(@Body UpdateRequestBean requestBean);
+    Call<BaseBean<UpdateBean>> checkUpdateForFastMail(@Body UpdateRequestBean requestBean);
+
+    /**
+     * APP检查更新接口
+     * @param requestBean
+     * @return
+     */
+    @POST("/version/express/getversionupdate")
+    @Headers({"Content-Type: application/json"})
+    Call<BaseBean<UpdateBean>> checkUpdateForCourier(@Body UpdateRequestBean requestBean);
 }
 

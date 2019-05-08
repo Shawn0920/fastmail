@@ -59,7 +59,7 @@ android {
             versionName "1.0"
             resValue "string", "app_name", "优递园"
             buildConfigField "String", "APP_File_Provider", '"com.flavor.fastmail.fileprovider"'
-            buildConfigField "String", "BASE_SERVER_URL", '"http://my/app/"'
+            buildConfigField "String", "BASE_SERVER_URL", '"http://10.109.0.10:80/"'
             buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
 //            buildConfigField "String", "BASE_H5_URL", '"http://10.105.1.55:8080"'
             //manifest里面的值
