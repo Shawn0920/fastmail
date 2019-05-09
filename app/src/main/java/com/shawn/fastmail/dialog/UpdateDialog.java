@@ -87,7 +87,6 @@ public class UpdateDialog extends BaseDialog {
 
     @Override
     protected void onCreateDialog() {
-
         root_view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             private boolean flag = true;
 
