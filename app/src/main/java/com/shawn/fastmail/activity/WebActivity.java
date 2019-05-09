@@ -131,7 +131,6 @@ public class WebActivity extends BaseActivity {
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                LogUtils.e("======", newProgress + "");
                 if (newProgress == 100) {
                     webview.progressbar.setVisibility(View.GONE);
                 } else {
@@ -330,7 +329,7 @@ public class WebActivity extends BaseActivity {
             super.onReceivedError(view, errorCode, description, failingUrl);
             LogUtils.e("shawn======", failingUrl);
             failUrl = failingUrl;
-            view.loadUrl("file:///android_asset/error/error.html");
+//            view.loadUrl("file:///android_asset/error/error.html");
         }
 
         @Override
