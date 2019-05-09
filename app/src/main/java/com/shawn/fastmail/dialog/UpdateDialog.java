@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shawn.fastmail.App;
@@ -58,7 +60,12 @@ public class UpdateDialog extends BaseDialog {
     @BindView(R.id.tv_icon)
     TextView tvProgress;
 
+    @BindView(R.id.root_view)
+    RelativeLayout root_view;
+
     private String url;
+
+    private int pbUpdateWidth;
 
     public UpdateDialog(Context context, int themeResId) {
         super(context, themeResId);
@@ -70,6 +77,7 @@ public class UpdateDialog extends BaseDialog {
 
     public UpdateDialog(Context context) {
         super(context, R.style.baseAlertDialog);
+
     }
 
     @Override
@@ -80,6 +88,21 @@ public class UpdateDialog extends BaseDialog {
     @Override
     protected void onCreateDialog() {
 
+        root_view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            private boolean flag = true;
+
+            @Override
+            public boolean onPreDraw() {
+                if (flag) {
+                    pbUpdateWidth = mProgressBar.getMeasuredWidth();
+                    flag = false;
+                }
+                return true;
+            }
+        });
+
+        this.setCanceledOnTouchOutside(false);
+        this.setCancelable(false);
     }
 
     @OnClick({R.id.btn_cancel, R.id.btn_update})
@@ -93,6 +116,8 @@ public class UpdateDialog extends BaseDialog {
 //                btnConfirm.setVisibility(View.GONE);
                 try {
                     downloadProgress();
+                    btnConfirm.setEnabled(false);
+                    btnCancel.setEnabled(false);
 //                    ivClose.setEnabled(false);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -117,6 +142,7 @@ public class UpdateDialog extends BaseDialog {
                     final int percent = (int) (100 * bytesRead / contentLength);
                     mProgressBar.setProgress(percent);
                     tvProgress.setText((100 * bytesRead) / contentLength + "%");
+                    setProgress((int) ((100 * bytesRead) / contentLength));
                     LogUtils.e("cylog=====", "下载进度：" + (100 * bytesRead) / contentLength + "%");
                 });
             }
@@ -159,9 +185,9 @@ public class UpdateDialog extends BaseDialog {
 //                        mImageView.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
                     checkFilePath();
                     String path = Environment.getExternalStoragePublicDirectory("Download").getAbsolutePath();
-                    byte2File(data, path, "WeCredit.apk");
-                    Log.e("========", path + "/WeCredit.apk");
-                    File targetFile = new File(path + "/WeCredit.apk");
+                    byte2File(data, path, "udy.apk");
+                    Log.e("========", path + "/udy.apk");
+                    File targetFile = new File(path + "/udy.apk");
                     if (targetFile.exists()) {//先判断文件是否已存在
                         //1. 创建 Intent 并设置 action
                         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -173,16 +199,34 @@ public class UpdateDialog extends BaseDialog {
                         intent.setDataAndType(Uri.fromFile(targetFile), "application/vnd.android.package-archive");
                         //3. 设置 data 和 type (效果和上面一样)
                         //intent.setDataAndType(Uri.parse("file://" + targetFile.getPath()),"application/vnd.android.package-archive");
-                        //4. 启动 activity
-                        startActivity(intent);
+
                         if (isValidContext(mContext) && isShowing()) {
                             dismiss();
                         }
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //4. 启动 activity
+                        startActivity(Intent.createChooser(intent,""));
 
+                        //关闭当前APP
+                        android.os.Process.killProcess(android.os.Process.myPid());    //获取PID
+                        System.exit(0);   //常规java、c#的标准退出法，返回值为0代表正常退出
                     }
                 });
             }
         });
+    }
+
+    private void setProgress(int process) {
+        int critical = 88;
+        if (tvProgress != null) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tvProgress.getLayoutParams();
+            if (process < critical) {
+                params.leftMargin = (int) (pbUpdateWidth * process / 100);
+            } else {
+                params.leftMargin = (int) (pbUpdateWidth * (critical - 1) / 100);
+            }
+            tvProgress.setLayoutParams(params);
+        }
     }
 
     public static void byte2File(byte[] buf, String filePath, String fileName) {
@@ -241,8 +285,8 @@ public class UpdateDialog extends BaseDialog {
     public void setData(String title, String content, boolean isForce, String url) {
         tvTitle.setText(title);
         tvContent.setText(content);
-        btnCancel.setVisibility(!isForce ? View.VISIBLE : View.INVISIBLE);
-        vLine.setVisibility(!isForce ? View.VISIBLE : View.INVISIBLE);
+        btnCancel.setVisibility(!isForce ? View.VISIBLE : View.GONE);
+        vLine.setVisibility(!isForce ? View.VISIBLE : View.GONE);
         this.url = url;
     }
 

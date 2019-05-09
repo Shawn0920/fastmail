@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .imgUrl{
+      width: 214px;
+      height: 214px;
+      text-align: center;
+      margin-top: 118px;
+      margin:118px auto 0;
+    }
+    .imgUrl img{
+      width: 100%;
+      height: 100%;
+    }
+    .errTips{
+      color: #C4C9D2;
+      font-size:14px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .reload{
+      width:120px;
+      height:40px;
+      line-height: 40px;
+      text-align: center;
+      border-radius:20px;
+      border:1px solid #3C7DE2;
+      margin:37px auto 0;
+      color: #3C7DE2;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="imgUrl"><img src="./img/wangluoyichang@2x.png" alt=""></div>
+  <div class="errTips">网络好像出问题了，请稍后再试呗！</div>
+  <div class="reload" onclick="refresh()">重新加载</div>
+</body>
+<script>
+  
+    var isTime = 0;  
+    var currentTime = new Date().getTime();
+
+
+    function refresh(){
+        var API_NAMESPACE = '__JavascriptBridge__';
+        var API = window[API_NAMESPACE] || null;
+        if (API && typeof API.refresh === 'function') {
+            var userInfo = API.refresh();
+        } 
+    }
+
+    // 退出APP
+    window.back = function(){
+      if((currentTime - isTime)<2000){
+          closeApp();
+        }else{
+          isTime = currentTime;
+          toast()
+        }
+      }
+
+    //关闭APP
+    function closeApp(){ 
+        var API_NAMESPACE = '__JavascriptBridge__';
+        var API = window[API_NAMESPACE] || null;
+        if (API && typeof API.closeApp === 'function') {
+            var userInfo = API.closeApp();
+        } 
+    }
+    // 弹框展示
+    function toast(){ 
+        var API_NAMESPACE = '__JavascriptBridge__';
+        var API = window[API_NAMESPACE] || null;
+        if (API && typeof API.toast === 'function') {
+            var userInfo = API.toast('再次点击退出！');
+        } 
+    }
+        
+</script>
+</html>

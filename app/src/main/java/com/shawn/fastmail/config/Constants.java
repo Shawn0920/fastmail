@@ -32,5 +32,8 @@ public class Constants {
         public static final String inbound = "inbound";
         public static final String barcode = "barcode";
         public static final String closeApp = "closeApp";
+        public static final String getVersionCode = "getVersionCode";
+        public static final String refresh = "refresh";
+        public static final String toast = "toast";
     }
 }

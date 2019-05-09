@@ -97,7 +97,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
     private AppCompatTextView tvBack, tvTitle;
 
 
-    private boolean isOpenFlash = false;
+    private boolean isOpenFlash = true;
     VinCameraPreView vinCameraPreView;
     private DisplayMetrics dm;
     int statusHeight;
@@ -257,8 +257,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         } else if (barCodePreView != null) {
             isInFront = true;
         }
-        isOpenFlash = false;
-        iv_camera_flash.setImageResource(R.drawable.icon_flash_normal);
+
     }
 
     @Override
@@ -272,6 +271,8 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         } else if (barCodePreView != null) {
             isInFront = false;
         }
+        isOpenFlash = false;
+        iv_camera_flash.setImageResource(R.drawable.icon_flash_normal);
     }
 
     //界面的布局，主要包括两方面：扫描框的布局 和 界面其他元素布局
