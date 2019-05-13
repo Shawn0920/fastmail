@@ -191,7 +191,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
         //动态创建 SurfaceView
         vinCameraPreView = new VinCameraPreView(SmartvisionCameraActivity.this);
         setFlashlightEnabled(isOpenFlash);
-//        vinCameraPreView.setZoom(false);
+
         surfaceContainer.addView(vinCameraPreView);
         vinCameraPreView.setOnTextChangeListener(new VinCameraPreView.OnTextChangeListener() {
             @Override
@@ -223,6 +223,7 @@ public class SmartvisionCameraActivity extends AppCompatActivity implements View
 
         layoutRectAndScanLineView();
         layoutNormalView();
+//        vinCameraPreView.setZoom(true);
     }
 
     private void removeVinView() {

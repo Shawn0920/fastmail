@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:keepScreenOn="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/icon_flash_press"/>
+                android:src="@drawable/icon_flash_press" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -122,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:onClick="qiehuan"
-        android:visibility="gone"
-        android:text="切换" />
+        android:text="切换"
+        android:visibility="gone" />
 
 </RelativeLayout>

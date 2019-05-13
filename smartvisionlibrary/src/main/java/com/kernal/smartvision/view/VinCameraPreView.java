@@ -125,7 +125,7 @@ public class VinCameraPreView extends SurfaceView implements SurfaceHolder.Callb
         myHandler.sendEmptyMessageDelayed(1001,0);
 
         //设置缩放
-//        setZoom(false);
+//        setZoom(true);
     }
 
     @Override
@@ -267,26 +267,20 @@ public class VinCameraPreView extends SurfaceView implements SurfaceHolder.Callb
      * @param zoom
      */
     public void setZoom(boolean zoom){
-        Log.e("================","start");
         if( mCamera != null && mCamera.getParameters().isZoomSupported()){
             mCamera.setZoomChangeListener(new Camera.OnZoomChangeListener() {
                 @Override
                 public void onZoomChange(int i, boolean b, Camera camera) {
-                    Log.e("===============","zzz");
                 }
             });
-            Log.e("================","true");
             Camera.Parameters parameters = mCamera.getParameters();
             if (zoom){
-                Log.e("================","1");
-                parameters.setZoom((int) (mCamera.getParameters().getMaxZoom() * 0.4));
+                parameters.setZoom((int) (mCamera.getParameters().getMaxZoom() * 0.01));
             }else {
-                parameters.setZoom(100000);
-                Log.e("================","2");
+                parameters.setZoom(0);
             }
             mCamera.setParameters(parameters);
         }
-        Log.e("================","finish");
     }
 
     /**

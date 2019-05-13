@@ -62,11 +62,12 @@ android {
             buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.zhongbianli.cn/tender/"'
             buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
 //            buildConfigField "String", "BASE_SERVER_URL", '"http://10.109.0.10:80/"'
-//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.1.55:8080"'
+//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.1.93:8080"'
+            buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.fastmail.fileprovider"'
             //manifest里面的值
             manifestPlaceholders = [
                     MTA_CHANNEL_VALUE: "fastmail",
-                    FILE_PROVIDER    : "com.flavor.fastmail.fileprovider"]
+                    FILE_PROVIDER    : "cn.zhongbianli.fastmail.fileprovider"]
         }
 
         //你的APP
@@ -78,10 +79,11 @@ android {
             buildConfigField "String", "APP_File_Provider", '"com.flavor.courier.fileprovider"'
             buildConfigField "String", "BASE_SERVER_URL", '"http://your/app/"'
             buildConfigField "String", "BASE_H5_URL", '"http://udykd.zhongbianli.cn"'
+            buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.courier.fileprovider"'
             //manifest里面的值
             manifestPlaceholders = [
                     MTA_CHANNEL_VALUE: "courier",
-                    FILE_PROVIDER    : "com.flavor.courier.fileprovider"]
+                    FILE_PROVIDER    : "cn.zhongbianli.courier.fileprovider"]
         }
     }
 
