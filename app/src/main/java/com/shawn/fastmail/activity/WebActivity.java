@@ -550,7 +550,7 @@ public class WebActivity extends BaseActivity {
                 @Override
                 protected void onSuccess(Call<BaseBean<UpdateBean>> call, Response<BaseBean<UpdateBean>> response, BaseBean<UpdateBean> bean) {
                     super.onSuccess(call, response, bean);
-                    if (bean.getData().isNeedUpdate == 0) {
+                    if (bean.getData().isNeedUpdate == 1) {
                         new UpdateDialog.Builder(WebActivity.this)
                                 .data(bean.getData().title, bean.getData().content, bean.getData().isForce == 1, bean.getData().url, bean.getData().newVersionCode)
                                 .builder()
