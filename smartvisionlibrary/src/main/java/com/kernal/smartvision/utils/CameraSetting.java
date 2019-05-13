@@ -163,8 +163,8 @@ public class CameraSetting {
                 // parameters.setExposureCompensation((int)(parameters.getMinExposureCompensation()*0.7));
                 //parameters.setExposureCompensation((int) (parameters.getMaxExposureCompensation()*0.2));
                 if (currentType == 2) {
-//                    parameters.setZoom((int) (camera.getParameters().getMaxZoom() * 0.1));
-                    parameters.setZoom(0);
+                    parameters.setZoom((int) (camera.getParameters().getMaxZoom() * 0.1));
+//                    parameters.setZoom(0);
                     Log.e("===============","zoom:"+camera.getParameters().getMaxZoom());
                 }
                 camera.setDisplayOrientation(rotation);

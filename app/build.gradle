@@ -56,7 +56,7 @@ android {
         fastmail {
             applicationId "cn.zhongbianli.fastmail"
             versionCode 1
-            versionName "1.0"
+            versionName "1.2"
             resValue "string", "app_name", "优递园"
             buildConfigField "String", "APP_File_Provider", '"com.flavor.fastmail.fileprovider"'
             buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.zhongbianli.cn/tender/"'
