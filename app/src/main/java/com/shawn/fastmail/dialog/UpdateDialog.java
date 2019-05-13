@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -14,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shawn.fastmail.App;
+import com.shawn.fastmail.BuildConfig;
 import com.shawn.fastmail.R;
 import com.shawn.fastmail.base.BaseDialog;
 import com.shawn.fastmail.https.HttpsUtils;
@@ -188,23 +191,34 @@ public class UpdateDialog extends BaseDialog {
                     Log.e("========", path + "/udy.apk");
                     File targetFile = new File(path + "/udy.apk");
                     if (targetFile.exists()) {//先判断文件是否已存在
-                        //1. 创建 Intent 并设置 action
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        //2. 设置 category
-                        intent.addCategory(Intent.CATEGORY_DEFAULT);
-                        //添加 flag ,不记得在哪里看到的，说是解决：有些机器上不能成功跳转的问题
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //3. 设置 data 和 type
-                        intent.setDataAndType(Uri.fromFile(targetFile), "application/vnd.android.package-archive");
-                        //3. 设置 data 和 type (效果和上面一样)
-                        //intent.setDataAndType(Uri.parse("file://" + targetFile.getPath()),"application/vnd.android.package-archive");
+                        if (Build.VERSION.SDK_INT >= 24) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            //provider authorities
+                            Uri apkUri = FileProvider.getUriForFile(mContext, BuildConfig.FILEPROVIDER, targetFile);
+                            //Granting Temporary Permissions to a URI
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                            startActivity(intent);
+                        } else {
+                            //1. 创建 Intent 并设置 action
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            //2. 设置 category
+                            intent.addCategory(Intent.CATEGORY_DEFAULT);
+                            //添加 flag ,不记得在哪里看到的，说是解决：有些机器上不能成功跳转的问题
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            //3. 设置 data 和 type
+                            intent.setDataAndType(Uri.fromFile(targetFile), "application/vnd.android.package-archive");
+                            //3. 设置 data 和 type (效果和上面一样)
+                            //intent.setDataAndType(Uri.parse("file://" + targetFile.getPath()),"application/vnd.android.package-archive");
 
-                        if (isValidContext(mContext) && isShowing()) {
-                            dismiss();
-                        }
+                            if (isValidContext(mContext) && isShowing()) {
+                                dismiss();
+                            }
 //                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        //4. 启动 activity
-                        startActivity(Intent.createChooser(intent,""));
+                            //4. 启动 activity
+                            startActivity(Intent.createChooser(intent, ""));
+                        }
+
 
                         //关闭当前APP
                         android.os.Process.killProcess(android.os.Process.myPid());    //获取PID
