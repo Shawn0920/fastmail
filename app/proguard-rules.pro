@@ -149,6 +149,8 @@
 -keep @com.qihoo.SdkProtected.BarCode_sdk.Keep class  **{*;}
 -keep,allowobfuscation @interface com.qihoo.SdkProtected.BarCode_sdk.Keep
 
+-keep class com.intsig.** {*;}
+
 #-------------------------3.与js互相调用的类------------------------
 
 

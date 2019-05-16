@@ -547,5 +547,35 @@ public class JavascriptBridge {
                 functionSync.onHandle(object);
             }
         }
+
+        @android.webkit.JavascriptInterface
+        public void initBarCode(){
+            FunctionSync functionSync = FunManager.getFunctionSync(Constants.NativeMethodName.initBarCode);
+            if (functionSync != null) {
+                functionSync.onHandle(null);
+            }
+        }
+
+        @android.webkit.JavascriptInterface
+        public void scannerVoice(){
+            FunctionSync functionSync = FunManager.getFunctionSync(Constants.NativeMethodName.scannerVoice);
+            if (functionSync != null) {
+                functionSync.onHandle(null);
+            }
+        }
+        @android.webkit.JavascriptInterface
+        public void inboundSuccess(String url) {
+            FunctionSync functionSync = FunManager.getFunctionSync("inboundSuccess");
+            if (functionSync != null) {
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("url", url);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                functionSync.onHandle(object);
+            }
+
+        }
     }
 }

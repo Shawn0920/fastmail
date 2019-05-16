@@ -29,7 +29,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.google.gson.Gson;
-import com.kernal.smartvision.activity.SmartvisionCameraActivity;
 import com.shawn.fastmail.BuildConfig;
 import com.shawn.fastmail.R;
 import com.shawn.fastmail.base.BaseActivity;
@@ -56,7 +55,7 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.shawn.fastmail.config.Constants.APP_CACAHE_DIRNAME;
+import static com.shawn.fastmail.config.Constants.*;
 
 /**
  * 描述：
@@ -145,6 +144,8 @@ public class WebActivity extends BaseActivity {
         });
 
         initWebView();
+
+        WebView.setWebContentsDebuggingEnabled(true);
 
 
         webview.loadUrl(url);
@@ -456,8 +457,9 @@ public class WebActivity extends BaseActivity {
             @Override
             public JSONObject onHandle(JSONObject param) {
                 String url = JsonUtil.getString(param, "url");
-                Intent intent = new Intent(WebActivity.this, SmartvisionCameraActivity.class);
+                Intent intent = new Intent(WebActivity.this, PreviewActivity.class);
                 intent.putExtra("url", url);
+                intent.putExtra(PreviewActivity.EXTRA_KEY_APP_KEY, OCR_APP_KEY);
                 WebActivity.this.startActivityForResult(intent, REQUEST_CODE_INBOUND);
                 return null;
             }

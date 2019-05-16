@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.shawn.fastmail.R;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 描述：
@@ -57,5 +58,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected boolean isStatusBar() {
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

@@ -3,7 +3,6 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-
     android:background="@mipmap/bg_toolbar">
 
     <android.support.v7.widget.AppCompatTextView
@@ -11,8 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@mipmap/icon_back"
-        android:padding="10dp"
-        android:drawablePadding="6dp" />
+        android:drawablePadding="6dp"
+        android:padding="10dp" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/toolbar_title"
@@ -22,16 +21,13 @@
         android:textColor="@color/white"
         android:textSize="18sp" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/toolbar_next"
+    <ImageView
+        android:id="@+id/iv_camera_flash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:padding="10dp"
-        android:gravity="center"
-        android:visibility="gone"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/icon_flash_press" />
 
 </android.support.v7.widget.Toolbar>
 

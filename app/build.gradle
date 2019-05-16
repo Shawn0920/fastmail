@@ -9,6 +9,10 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         flavorDimensions "versionCode"
+
+        ndk{
+            abiFilters "armeabi ","armeabi-v7a"
+        }
     }
     signingConfigs {
         config {
@@ -56,18 +60,20 @@ android {
         fastmail {
             applicationId "cn.zhongbianli.fastmail"
             versionCode 1
-            versionName "1.2"
+            versionName "1.4"
             resValue "string", "app_name", "优递园"
             buildConfigField "String", "APP_File_Provider", '"com.flavor.fastmail.fileprovider"'
             buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.zhongbianli.cn/tender/"'
             buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
 //            buildConfigField "String", "BASE_SERVER_URL", '"http://10.109.0.10:80/"'
-//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.1.93:8080"'
+//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.0.76:8080"'
             buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.fastmail.fileprovider"'
             //manifest里面的值
             manifestPlaceholders = [
                     MTA_CHANNEL_VALUE: "fastmail",
-                    FILE_PROVIDER    : "cn.zhongbianli.fastmail.fileprovider"]
+                    FILE_PROVIDER    : "cn.zhongbianli.fastmail.fileprovider",
+                    UMENG_APPKEY:"5cdbd80e4ca357942c000e47",
+                    UMENG_CHANNEL_VALUE:"ydy1000000"]
         }
 
         //你的APP
@@ -100,7 +106,7 @@ static def releaseTime() {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.support["appcompat-v7"]
     implementation rootProject.ext.support["constraint-layout"]
     implementation rootProject.ext.support["design"]
@@ -116,9 +122,12 @@ dependencies {
     implementation 'com.squareup.okio:okio:1.7.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.alibaba:fastjson:1.2.44'
+    implementation  'com.umeng.umsdk:analytics:8.0.0'
+    implementation  'com.umeng.umsdk:common:2.0.0'
 //    api 'com.didichuxing.doraemonkit:doraemonkit:1.1.5'
 //    releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.5'
 
     api project(':zxing')
     api project(':smartvisionlibrary')
+    implementation files('libs/expscannersdk_pr.jar')
 }

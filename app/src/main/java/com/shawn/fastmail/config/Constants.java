@@ -19,6 +19,8 @@ public class Constants {
 
     public static final String APP_CACAHE_DIRNAME = "/webcache";
 
+    public static final String OCR_APP_KEY = "6R1dfMLVKdYPD9KA30M0Ub9U";// 替换您申请的合合信息授权提供的APP_KEY;20170701
+
 
     public static final class JSMethodName {
         public static final String qrResult = "qrResult";
@@ -35,5 +37,8 @@ public class Constants {
         public static final String getVersionCode = "getVersionCode";
         public static final String refresh = "refresh";
         public static final String toast = "toast";
+        public static final String initBarCode = "initBarCode";
+        public static final String scannerVoice = "scannerVoice";
+
     }
 }
