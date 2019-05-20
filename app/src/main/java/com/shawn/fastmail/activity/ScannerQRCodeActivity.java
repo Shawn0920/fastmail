@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import com.shawn.fastmail.R;
@@ -20,10 +22,12 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
  * @author shawn
  * @date 2019/3/27
  */
-public class ScannerQRCodeActivity extends BaseActivity implements QRCodeView.Delegate {
+public class ScannerQRCodeActivity extends BaseActivity implements QRCodeView.Delegate, View.OnClickListener {
+
+    public static final int RESULT_PHONE = 0x600;
 
     private ZXingView mZXingView;
-    private TextView mToolbarTitle, mToolbarBack;
+    private TextView mToolbarTitle, mToolbarBack, tvPhone;
 
     @Override
     protected int onLayout() {
@@ -37,8 +41,10 @@ public class ScannerQRCodeActivity extends BaseActivity implements QRCodeView.De
         mZXingView = findViewById(R.id.zxingview);
         mToolbarTitle = findViewById(R.id.toolbar_title);
         mToolbarBack = findViewById(R.id.toolbar_back);
+        tvPhone = findViewById(R.id.tv_phone);
 
         mToolbarBack.setOnClickListener(view -> {
+            setResult(RESULT_CANCELED);
             ScannerQRCodeActivity.this.finish();
         });
 
@@ -51,6 +57,8 @@ public class ScannerQRCodeActivity extends BaseActivity implements QRCodeView.De
 
         mZXingView.setType(BarcodeType.TWO_DIMENSION, null); // 只识别二维条码
         mZXingView.startSpotAndShowRect(); // 显示扫描框，并开始识别
+
+        tvPhone.setOnClickListener(this);
     }
 
 
@@ -109,4 +117,23 @@ public class ScannerQRCodeActivity extends BaseActivity implements QRCodeView.De
 
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.tv_phone:
+                setResult(RESULT_PHONE);
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            setResult(RESULT_CANCELED);
+            ScannerQRCodeActivity.this.finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

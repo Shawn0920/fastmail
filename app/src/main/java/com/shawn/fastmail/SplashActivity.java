@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,14 +16,20 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.shawn.fastmail.activity.WebActivity;
+import com.shawn.fastmail.utils.LogUtils;
 import com.shawn.fastmail.utils.SpUtil;
 import com.shawn.fastmail.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +97,7 @@ public class SplashActivity extends AppCompatActivity {
         //申请权限
         if (mPermissionList.size() > 0) {//有权限没有通过，需要申请
             ActivityCompat.requestPermissions(this, permissions, mRequestCode);
-        }else{
+        } else {
             //说明权限都已经通过，可以做你想做的事情去
             rightRun();
         }
@@ -103,19 +110,19 @@ public class SplashActivity extends AppCompatActivity {
         switch (requestCode) {
             case mRequestCode:
                 boolean hasPermissionDismiss = false;//有权限没有通过
-                for (int i=0;i<grantResults.length;i++){
-                    if(grantResults[i] == PackageManager.PERMISSION_DENIED){
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                         hasPermissionDismiss = true;
                     }
                 }
-                if(hasPermissionDismiss){
+                if (hasPermissionDismiss) {
                     ToastUtils.show(R.string.sd_card_permission_1);
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     Uri uri = Uri.fromParts("package", getApplicationContext().getPackageName(), null);
                     intent.setData(uri);
                     startActivity(intent);
                     this.finish();
-                }else{
+                } else {
                     rightRun();
                 }
 //                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //同意权限申请
@@ -191,4 +198,17 @@ public class SplashActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
 }

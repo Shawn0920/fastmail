@@ -1,1 +1,1 @@
-include ':app', ':zxing', ':qrcodecore', ':smartvisionlibrary'
+include ':app', ':zxing', ':qrcodecore'

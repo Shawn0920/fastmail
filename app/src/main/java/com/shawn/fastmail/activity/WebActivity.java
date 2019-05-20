@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -17,8 +18,10 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.DownloadListener;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -56,6 +59,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.shawn.fastmail.config.Constants.*;
+import static com.shawn.fastmail.config.Constants.JSMethodName.*;
+import static com.shawn.fastmail.config.Constants.NativeMethodName.*;
 
 /**
  * 描述：
@@ -145,7 +150,7 @@ public class WebActivity extends BaseActivity {
 
         initWebView();
 
-        WebView.setWebContentsDebuggingEnabled(true);
+//        WebView.setWebContentsDebuggingEnabled(true);
 
 
         webview.loadUrl(url);
@@ -156,6 +161,8 @@ public class WebActivity extends BaseActivity {
         initFunction();
 
         checkUpdate();
+
+        setListenerToRootView();
     }
 
 
@@ -296,6 +303,10 @@ public class WebActivity extends BaseActivity {
             if (data != null) {
                 webview.loadUrl(data.getStringExtra("url"));
             }
+        } else if (requestCode == REQUEST_CODE_QR && resultCode == ScannerQRCodeActivity.RESULT_PHONE) {
+            funJS(goPhone,"");
+        } else if(requestCode == REQUEST_CODE_QR && resultCode == RESULT_CANCELED){
+            funJS(goHome,"");
         }
     }
 
@@ -575,4 +586,27 @@ public class WebActivity extends BaseActivity {
             });
         }
     }
+
+    private void setListenerToRootView() {
+        webview.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                //获取当前界面可视部分
+                webview.getWindowVisibleDisplayFrame(r);
+                //获取屏幕的高度
+                int screenHeight =  webview.getRootView().getHeight();
+                //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
+                int heightDifference = screenHeight - r.bottom;
+                if(heightDifference>0){
+                    //键盘弹出
+                    funJS(showKeyboard,"");
+                }else{
+                    //键盘收起
+                    funJS(hideKeyboard,"");
+                }
+            }
+        });
+    }
+
 }

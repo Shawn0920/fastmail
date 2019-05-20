@@ -26,6 +26,10 @@ public class Constants {
         public static final String qrResult = "qrResult";
         public static final String barResult = "barResult";
         public static final String back = "back";
+        public static final String goPhone = "goPhone";
+        public static final String goHome = "goHome";
+        public static final String showKeyboard = "showKeyboard";
+        public static final String hideKeyboard = "hideKeyboard";
     }
 
 

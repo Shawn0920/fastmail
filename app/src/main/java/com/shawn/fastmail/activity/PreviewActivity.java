@@ -68,7 +68,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kernal.smartvision.activity.SmartvisionCameraActivity;
 import com.shawn.fastmail.R;
 import com.shawn.fastmail.config.Constants;
 import com.shawn.fastmail.utils.FunManager;
