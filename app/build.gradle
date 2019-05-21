@@ -66,7 +66,7 @@ android {
             buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.zhongbianli.cn/tender/"'
             buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
 //            buildConfigField "String", "BASE_SERVER_URL", '"http://10.109.0.10:80/"'
-//            buildConfigField "String", "BASE_H5_URL", '"http://10.109.1.163:8080"'
+//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.1.80:8080"'
             buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.fastmail.fileprovider"'
             //manifest里面的值
             manifestPlaceholders = [
@@ -89,7 +89,9 @@ android {
             //manifest里面的值
             manifestPlaceholders = [
                     MTA_CHANNEL_VALUE: "courier",
-                    FILE_PROVIDER    : "cn.zhongbianli.courier.fileprovider"]
+                    FILE_PROVIDER    : "cn.zhongbianli.courier.fileprovider",
+                    UMENG_APPKEY:"5ce24b45570df38d4a001315",
+                    UMENG_CHANNEL_VALUE:"ydy5000000"]
         }
     }
 
@@ -106,7 +108,7 @@ static def releaseTime() {
 }
 
 dependencies {
-//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.support["appcompat-v7"]
     implementation rootProject.ext.support["constraint-layout"]
     implementation rootProject.ext.support["design"]

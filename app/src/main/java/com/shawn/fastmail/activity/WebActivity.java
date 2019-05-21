@@ -598,12 +598,14 @@ public class WebActivity extends BaseActivity {
                 int screenHeight =  webview.getRootView().getHeight();
                 //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
                 int heightDifference = screenHeight - r.bottom;
-                if(heightDifference>0){
+                if(heightDifference>300){
                     //键盘弹出
                     funJS(showKeyboard,"");
+                    LogUtils.e("=============","键盘弹出");
                 }else{
                     //键盘收起
                     funJS(hideKeyboard,"");
+                    LogUtils.e("=============","键盘收起");
                 }
             }
         });
