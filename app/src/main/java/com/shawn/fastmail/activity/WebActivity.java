@@ -362,13 +362,14 @@ public class WebActivity extends BaseActivity {
 
         }
 
-
+        @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
 
         }
 
+        @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
@@ -558,7 +559,7 @@ public class WebActivity extends BaseActivity {
     private void checkUpdate() {
         UpdateRequestBean requestBean = new UpdateRequestBean();
         requestBean.versionCode = CommonUtil.getVersionName(this);
-        if ("cn.zhongbianli.fastmail".equals(getPackageName())) {
+        if ("cn.zhongbianli.fastmail".equals(getPackageName()) || "cn.zhongbianli.fastmail.test".equals(getPackageName())) {
             RestClient.api().checkUpdateForFastMail(requestBean).enqueue(new NetCallBack<BaseBean<UpdateBean>>(this) {
                 @Override
                 protected void onSuccess(Call<BaseBean<UpdateBean>> call, Response<BaseBean<UpdateBean>> response, BaseBean<UpdateBean> bean) {
@@ -571,7 +572,7 @@ public class WebActivity extends BaseActivity {
                     }
                 }
             });
-        } else if ("cn.zhongbianli.courier".equals(getPackageName())) {
+        } else if ("cn.zhongbianli.courier".equals(getPackageName()) || "cn.zhongbianli.courier.test".equals(getPackageName())) {
             RestClient.api().checkUpdateForCourier(requestBean).enqueue(new NetCallBack<BaseBean<UpdateBean>>(this) {
                 @Override
                 protected void onSuccess(Call<BaseBean<UpdateBean>> call, Response<BaseBean<UpdateBean>> response, BaseBean<UpdateBean> bean) {
@@ -598,7 +599,7 @@ public class WebActivity extends BaseActivity {
                 int screenHeight =  webview.getRootView().getHeight();
                 //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
                 int heightDifference = screenHeight - r.bottom;
-                if(heightDifference>300){
+                if(heightDifference>200){
                     //键盘弹出
                     funJS(showKeyboard,"");
                     LogUtils.e("=============","键盘弹出");

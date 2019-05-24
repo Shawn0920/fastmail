@@ -129,7 +129,7 @@ public interface ApiService {
      * @param requestBean
      * @return
      */
-    @POST("/version/express/getversionupdate")
+    @POST("version/express/getversionupdate")
     @Headers({"Content-Type: application/json"})
     Call<BaseBean<UpdateBean>> checkUpdateForCourier(@Body UpdateRequestBean requestBean);
 }

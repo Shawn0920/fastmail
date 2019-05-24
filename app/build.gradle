@@ -56,17 +56,15 @@ android {
      * */
     productFlavors {
 
-        //我的APP
+        //商户端  线上
         fastmail {
             applicationId "cn.zhongbianli.fastmail"
             versionCode 1
             versionName "1.4"
             resValue "string", "app_name", "优递园"
             buildConfigField "String", "APP_File_Provider", '"com.flavor.fastmail.fileprovider"'
-            buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.zhongbianli.cn/tender/"'
-            buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
-//            buildConfigField "String", "BASE_SERVER_URL", '"http://10.109.0.10:80/"'
-//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.1.80:8080"'
+            buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.udyuan.net/tender/"'
+            buildConfigField "String", "BASE_H5_URL", '"http://udyh5.udyuan.net"'
             buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.fastmail.fileprovider"'
             //manifest里面的值
             manifestPlaceholders = [
@@ -76,20 +74,58 @@ android {
                     UMENG_CHANNEL_VALUE:"ydy1000000"]
         }
 
-        //你的APP
+        //商户端  测试
+        fastmailTest{
+            applicationId "cn.zhongbianli.fastmail.test"
+            versionCode 1
+            versionName "1.4"
+            resValue "string", "app_name", "优递园测试"
+            buildConfigField "String", "APP_File_Provider", '"com.flavor.fastmail.test.fileprovider"'
+            buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.zhongbianli.cn/tender/"'
+            buildConfigField "String", "BASE_H5_URL", '"http://udyh5.zhongbianli.cn"'
+//            buildConfigField "String", "BASE_SERVER_URL", '"http://10.109.0.10:80/"'
+//            buildConfigField "String", "BASE_H5_URL", '"http://10.105.1.80:8080"'
+            buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.fastmail.test.fileprovider"'
+            //manifest里面的值
+            manifestPlaceholders = [
+                    MTA_CHANNEL_VALUE: "fastmail",
+                    FILE_PROVIDER    : "cn.zhongbianli.fastmail.test.fileprovider",
+                    UMENG_APPKEY:"5cdbd80e4ca357942c000e47",
+                    UMENG_CHANNEL_VALUE:"ydy1000000"]
+        }
+
+        //快递员  线上
         courier {
             applicationId "cn.zhongbianli.courier"
             versionCode 1
             versionName "1.0"
             resValue "string", "app_name", "快递员"
             buildConfigField "String", "APP_File_Provider", '"com.flavor.courier.fileprovider"'
-            buildConfigField "String", "BASE_SERVER_URL", '"http://your/app/"'
-            buildConfigField "String", "BASE_H5_URL", '"http://udykd.zhongbianli.cn"'
+            buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.udyuan.net/tender/"'
+            buildConfigField "String", "BASE_H5_URL", '"http://udykd.udyuan.net"'
             buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.courier.fileprovider"'
             //manifest里面的值
             manifestPlaceholders = [
                     MTA_CHANNEL_VALUE: "courier",
                     FILE_PROVIDER    : "cn.zhongbianli.courier.fileprovider",
+                    UMENG_APPKEY:"5ce24b45570df38d4a001315",
+                    UMENG_CHANNEL_VALUE:"ydy5000000"]
+        }
+
+        //快递员  测试
+        courierTest {
+            applicationId "cn.zhongbianli.courier.test"
+            versionCode 1
+            versionName "1.0"
+            resValue "string", "app_name", "快递员测试"
+            buildConfigField "String", "APP_File_Provider", '"com.flavor.courier.test.fileprovider"'
+            buildConfigField "String", "BASE_SERVER_URL", '"http://udyserver.zhongbianli.cn/tender/"'
+            buildConfigField "String", "BASE_H5_URL", '"http://udykd.zhongbianli.cn"'
+            buildConfigField "String", "FILEPROVIDER",'"cn.zhongbianli.courier.test.fileprovider"'
+            //manifest里面的值
+            manifestPlaceholders = [
+                    MTA_CHANNEL_VALUE: "courier",
+                    FILE_PROVIDER    : "cn.zhongbianli.courier.test.fileprovider",
                     UMENG_APPKEY:"5ce24b45570df38d4a001315",
                     UMENG_CHANNEL_VALUE:"ydy5000000"]
         }
@@ -130,6 +166,5 @@ dependencies {
 //    releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.5'
 
     api project(':zxing')
-//    api project(':smartvisionlibrary')
     implementation files('libs/expscannersdk_pr.jar')
 }

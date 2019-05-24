@@ -12,4 +12,15 @@
         android:layout_marginBottom="50dp"
         android:src="@mipmap/icon_splash" />
 
+    <TextView
+        android:id="@+id/tv_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="#ff0000"
+        android:textSize="32sp"
+        android:visibility="gone"
+        android:layout_marginTop="50dp"
+        android:text="测试环境"/>
+
 </FrameLayout>

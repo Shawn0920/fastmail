@@ -23,9 +23,11 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shawn.fastmail.activity.WebActivity;
+import com.shawn.fastmail.utils.CommonUtil;
 import com.shawn.fastmail.utils.LogUtils;
 import com.shawn.fastmail.utils.SpUtil;
 import com.shawn.fastmail.utils.ToastUtils;
@@ -64,6 +66,17 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         ivIcon = findViewById(R.id.iv_icon);
+
+        TextView tv = findViewById(R.id.tv_test);
+        if (BuildConfig.DEBUG) {
+            if ("cn.zhongbianli.courier.test".equals(getPackageName()) || "cn.zhongbianli.fastmail.test".equals(getPackageName())) {
+                tv.setVisibility(View.VISIBLE);
+            } else {
+                tv.setVisibility(View.GONE);
+            }
+        } else {
+            tv.setVisibility(View.GONE);
+        }
 
 //        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) { //表示未授权时
 //            //进行授权
